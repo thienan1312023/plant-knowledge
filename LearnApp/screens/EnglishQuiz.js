@@ -30,8 +30,9 @@ const quiz = {
   ]
 };
 export default class EnglishQuiz extends Component {
-  _handlePressAnswer = (key) => {
-    console.log('key', key);
+  selectedColor = 'coral';
+  _handlePressAnswer = key => {
+    this.selectedColor = 'blue';
   };
   render() {
     const { question, answers } = quiz;
@@ -48,15 +49,24 @@ export default class EnglishQuiz extends Component {
         }}
       >
         <View style={styles.container}>
-          <Text style={{ fontSize: 25, color: "white", fontWeight: "bold" }}>
+          <Text style={{ fontSize: 25, color: "white", fontWeight: "bold", margin: 10 }}>
             {question}
           </Text>
           <FlatList
             data={answers}
             renderItem={({ item }) => (
               <Button
-                style={{ fontSize: 20, color: "white" }}
-                styleDisabled={{ color: "red" }}
+                style={{ fontSize: 25, color: "white" }}
+                styleDisabled={{ color: "white" }}
+                containerStyle={{
+                  margin: 10,
+                  height: 45,
+                  overflow: "hidden",
+                  borderRadius: 10,
+                  borderWidth: 2,
+                  borderColor: this.selectedColor
+                }}
+                disabledContainerStyle={{ backgroundColor: "pink" }}
                 onPress={() => this._handlePressAnswer(item.key)}
               >
                 {item.content}
