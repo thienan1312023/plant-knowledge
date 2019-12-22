@@ -4,9 +4,9 @@ import {
   Text,
   StyleSheet,
   ImageBackground,
-  FlatList,
-  TouchableHighlight
+  FlatList
 } from "react-native";
+import Button from "react-native-button";
 
 const quiz = {
   question: "Where ______ the Battle of the Bulge?",
@@ -30,35 +30,42 @@ const quiz = {
   ]
 };
 export default class EnglishQuiz extends Component {
+  _handlePressAnswer = (key) => {
+    console.log('key', key);
+  };
   render() {
+    const { question, answers } = quiz;
     return (
-      <View
+      <ImageBackground
+        source={require("../assets/quiz-background.jpg")}
         style={{
-          backgroundImage: require("../assets/quiz-background.jpg"),
           width: "100%",
           height: "100%",
           display: "flex",
           justifyContent: "center",
-          alignSelf:"center",
-          alignItems:"center",
-          alignContent:"center",
-          flexDirection: "row",
+          alignSelf: "center",
           backgroundColor: "#FFF00F"
         }}
       >
         <View style={styles.container}>
-          <Text>{quiz.question}</Text>
+          <Text style={{ fontSize: 25, color: "white", fontWeight: "bold" }}>
+            {question}
+          </Text>
           <FlatList
-            data={quiz.answers}
+            data={answers}
             renderItem={({ item }) => (
-              <TouchableHighlight>
-                <Text> {item.content} </Text>
-              </TouchableHighlight>
+              <Button
+                style={{ fontSize: 20, color: "white" }}
+                styleDisabled={{ color: "red" }}
+                onPress={() => this._handlePressAnswer(item.key)}
+              >
+                {item.content}
+              </Button>
             )}
             keyExtractor={item => item.id}
           />
         </View>
-      </View>
+      </ImageBackground>
     );
   }
 }
