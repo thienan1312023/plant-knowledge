@@ -1,14 +1,13 @@
-import { createBottomTabNavigator, BottomTabBar } from 'react-navigation-tabs';
+import React, { Component } from "react";
+import { SafeAreaView } from "react-native";
+import Navigation from "./navigations";
 
-const TabBarComponent = props => <BottomTabBar {...props} />;
-
-const TabScreens = createBottomTabNavigator(
-  {
-    // other screens
-  },
-  {
-    tabBarComponent: props => (
-      <TabBarComponent {...props} style={{ borderTopColor: '#605F60' }} />
-    ),
+export default class App extends Component {
+  render() {
+    return (
+      <SafeAreaView style={{ flex: 1, backgroundColor: "#f2f2f2" }}>
+        <Navigation />
+      </SafeAreaView>
+    );
   }
-);
+}
