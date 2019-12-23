@@ -17,15 +17,13 @@ const quiz = {
   correct_answer: "Ascent",
   incorrect_answers: ["Monody", "Windfall", "Infinite Power!"]
 };
-
+const combineAnswersQuiz = combineRandomCorreactAndInCorrectAnswer(quiz);
 const EnglishQuiz = () => {
-  const {correct_answer} = quiz;
-  const [isSelected, setIsSelected] = useState(false);
-  const combineAnswersQuiz = combineRandomCorreactAndInCorrectAnswer(quiz);
+  const { correct_answer } = quiz;
+  const [isShowCorrectAnswer, setIsShowCorrectAnswer] = useState(false);
   const { question, answers } = combineAnswersQuiz;
   const _handlePressAnswer = item => {
-    if(item === correct_answer)
-    setIsSelected(true);
+    if (item === correct_answer) setIsShowCorrectAnswer(true);
   };
   return (
     <ImageBackground
@@ -55,9 +53,7 @@ const EnglishQuiz = () => {
                 borderRadius: 10,
                 borderWidth: 2,
                 borderColor:
-                  isSelected && item === correct_answer
-                    ? "#ADFF2F"
-                    : "coral"
+                isShowCorrectAnswer && item === correct_answer ? "#ADFF2F" : "coral"
               }}
               disabledContainerStyle={{ backgroundColor: "pink" }}
               onPress={() => _handlePressAnswer(item)}
