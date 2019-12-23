@@ -1,4 +1,4 @@
-import React, { Component } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -7,81 +7,89 @@ import {
   FlatList
 } from "react-native";
 import Button from "react-native-button";
+import { combineRandomCorreactAndInCorrectAnswer } from "../utils";
 
 const quiz = {
-  question: "Where ______ the Battle of the Bulge?",
-  answers: [
-    {
-      key: 1,
-      content: "are"
-    },
-    {
-      key: 1,
-      content: "is"
-    },
-    {
-      key: 1,
-      content: "were"
-    },
-    {
-      key: 1,
-      content: "was"
-    }
-  ]
+  category: "Entertainment: Music",
+  type: "multiple",
+  difficulty: "medium",
+  question: "Which song is not by TheFatRat?",
+  correct_answer: "Ascent",
+  incorrect_answers: ["Monody", "Windfall", "Infinite Power!"]
 };
-export default class EnglishQuiz extends Component {
-  selectedColor = 'coral';
-  _handlePressAnswer = key => {
-    this.selectedColor = 'blue';
+
+const EnglishQuiz = () => {
+  const {correct_answer} = quiz;
+  const [isSelected, setIsSelected] = useState(false);
+  const combineAnswersQuiz = combineRandomCorreactAndInCorrectAnswer(quiz);
+  const { question, answers } = combineAnswersQuiz;
+  const _handlePressAnswer = item => {
+    if(item === correct_answer)
+    setIsSelected(true);
   };
-  render() {
-    const { question, answers } = quiz;
-    return (
-      <ImageBackground
-        source={require("../assets/quiz-background.jpg")}
-        style={{
-          width: "100%",
-          height: "100%",
-          display: "flex",
-          justifyContent: "center",
-          alignSelf: "center",
-          backgroundColor: "#FFF00F"
-        }}
-      >
-        <View style={styles.container}>
-          <Text style={{ fontSize: 25, color: "white", fontWeight: "bold", margin: 10 }}>
-            {question}
-          </Text>
-          <FlatList
-            data={answers}
-            renderItem={({ item }) => (
-              <Button
-                style={{ fontSize: 25, color: "white" }}
-                styleDisabled={{ color: "white" }}
-                containerStyle={{
-                  margin: 10,
-                  height: 45,
-                  overflow: "hidden",
-                  borderRadius: 10,
-                  borderWidth: 2,
-                  borderColor: this.selectedColor
-                }}
-                disabledContainerStyle={{ backgroundColor: "pink" }}
-                onPress={() => this._handlePressAnswer(item.key)}
-              >
-                {item.content}
-              </Button>
-            )}
-            keyExtractor={item => item.id}
-          />
-        </View>
-      </ImageBackground>
-    );
-  }
-}
+  return (
+    <ImageBackground
+      source={require("../assets/quiz-background.jpg")}
+      style={{
+        width: "100%",
+        height: "100%",
+        display: "flex",
+        justifyContent: "center",
+        alignSelf: "center",
+        backgroundColor: "#FFF00F"
+      }}
+    >
+      <View style={styles.container}>
+        <Text style={styles.question}>{question}</Text>
+        <FlatList
+          data={answers}
+          renderItem={({ item }) => (
+            <Button
+              key={item}
+              style={{ fontSize: 25, color: "white" }}
+              styleDisabled={{ color: "white" }}
+              containerStyle={{
+                margin: 10,
+                height: 45,
+                overflow: "hidden",
+                borderRadius: 10,
+                borderWidth: 2,
+                borderColor:
+                  isSelected && item === correct_answer
+                    ? "#ADFF2F"
+                    : "coral"
+              }}
+              disabledContainerStyle={{ backgroundColor: "pink" }}
+              onPress={() => _handlePressAnswer(item)}
+            >
+              {item}
+            </Button>
+          )}
+          keyExtractor={item => item}
+        />
+      </View>
+    </ImageBackground>
+  );
+};
 
 const styles = StyleSheet.create({
   container: {
     paddingTop: 50
+  },
+  answers: {
+    margin: 10,
+    height: 45,
+    overflow: "hidden",
+    borderRadius: 10,
+    borderWidth: 2,
+    borderColor: "coral"
+  },
+  question: {
+    fontSize: 25,
+    color: "white",
+    fontWeight: "bold",
+    margin: 10
   }
 });
+
+export default EnglishQuiz;
