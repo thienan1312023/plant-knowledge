@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
+import { useDispatch, useSelector } from "react-redux";
 import {
   View,
   Text,
@@ -6,21 +7,19 @@ import {
   ImageBackground,
   FlatList
 } from "react-native";
+import { fetchQuestions } from "./actions";
 import Button from "react-native-button";
 import { combineRandomCorreactAndInCorrectAnswer } from "../utils";
 
-const quiz = {
-  category: "Entertainment: Music",
-  type: "multiple",
-  difficulty: "medium",
-  question: "Which song is not by TheFatRat?",
-  correct_answer: "Ascent",
-  incorrect_answers: ["Monody", "Windfall", "Infinite Power!"]
-};
 const combineAnswersQuiz = combineRandomCorreactAndInCorrectAnswer(quiz);
 const EnglishQuiz = () => {
+  const questionResources = useSelector(state => state.questions);
+  const dispatch = useDispatch();
   const { correct_answer } = quiz;
   const [isShowCorrectAnswer, setIsShowCorrectAnswer] = useState(false);
+  useEffect(() => {
+    dispatch(fetchQuestions());  
+  }, []);
   const { question, answers } = combineAnswersQuiz;
   const _handlePressAnswer = item => {
     if (item === correct_answer) setIsShowCorrectAnswer(true);
@@ -53,7 +52,9 @@ const EnglishQuiz = () => {
                 borderRadius: 10,
                 borderWidth: 2,
                 borderColor:
-                isShowCorrectAnswer && item === correct_answer ? "#ADFF2F" : "coral"
+                  isShowCorrectAnswer && item === correct_answer
+                    ? "#ADFF2F"
+                    : "coral"
               }}
               disabledContainerStyle={{ backgroundColor: "pink" }}
               onPress={() => _handlePressAnswer(item)}
